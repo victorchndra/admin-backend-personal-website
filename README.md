@@ -5,8 +5,8 @@
 - Tailwind CSS -> mostly used tailwind css to make my own cool stuff on html css styles (frontend styling)
 
 ## Role
-- Admin as my self who receive the access to all the data management control of the website
-- Guest as anonymous users who allows to read content, giving like and comment, and trying dumb account to access the admin site
+- Admin as my self who receives the access to all the website data management controls
+- Guest as an anonymous users that allows to read contents, giving like and comment, and trying dummy account to access the admin site
 
 ## Relational Database Overview
 - each **blog post** has many **categories**, and each **category** can belongs to many **blog posts**
