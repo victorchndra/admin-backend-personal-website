@@ -1,5 +1,5 @@
 ## Stack
-- Laravel (PHP) -> mostly used to business and query logic (backend)
+- Laravel (PHP) -> mostly used to create business and query logic (backend)
 - Inertia JS -> allows frontend-backend to communicate for building single page application (SPA)
 - React JS -> mostly used to create hooks, build components (frontend)
 - Tailwind CSS -> mostly used tailwind css to make my own cool stuff on html css styles (frontend styling)
