@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import AdminLayout from '../../Layouts/Admin/AdminLayout'
+import { useRoute } from '../../../../../vendor/tightenco/ziggy/src/js'
+import { Link } from '@inertiajs/react'
+import { EllipsisVertical, Eye, Pencil, ThumbsUp, Trash2 } from 'lucide-react'
+import AdminLayout from '../../../Layouts/Admin/AdminLayout'
 import Select from 'react-select'
-import { Archive, EllipsisVertical, ExternalLink, Eye, Pencil, ThumbsUp, Trash2 } from 'lucide-react'
 import moment from 'moment'
-import BlogDetailModal from '../../Components/BlogDetailModal'
-import { Button, Modal } from 'flowbite-react'
+import BlogViewModal from '../../../Components/BlogViewModal'
 
 const options = [
     { value: 'Technology', label: 'Technology' },
@@ -12,7 +13,10 @@ const options = [
     { value: 'Stack', label: 'Stack' }
 ]
 
-const Blog = ({ posts }) => {
+const Blog = ({ posts, navActive }) => {
+
+    const route = useRoute();
+
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     // list action dropdown
@@ -57,43 +61,23 @@ const Blog = ({ posts }) => {
                     <h1 className='text-2xl font-bold'>My Blog Article</h1>
                     <span>Share briliant insights!</span>
                 </div>
-                <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600'>+ New Post</button>
+                <Link
+                    className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600'
+                    href={route('blogs.create')}
+                    >
+                    + New Post
+                </Link>
 
             </div>
 
-            <Modal dismissible show={modalView} onClose={() => setModalView(false)}>
-                <Modal.Header>
-                    <span>{postData.title}</span>
-                </Modal.Header>
-                <Modal.Body className='flex flex-col space-y-3'>
-                    <span className='text-slate-600 text-sm'>{moment(postData.created_at).format('dddd, DD MMMM YYYY - HH:mm:ss')}</span>
-                    <img src='' alt={postData.img_name} className='bg-slate-200 h-72 rounded-lg'/>
-                    <div className='flex space-x-1 items-center'>
-                        <span className='text-sm'>Category: </span>
-                        {postData.categories.length > 0
-                            ? (postData.categories).map((category, index) => (<span key={index} className='bg-slate-600 text-white px-2 py-1 text-xs rounded-lg'>{category.name}</span>))
-                            : (<span className='bg-slate-100 px-2 py-1 text-xs rounded-lg'>not defined</span>)}
-                    </div>
-                    <h1 className='font-bold underline'>Summary</h1>
-                    <span>{postData.summary}</span>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className='px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-lg flex justify-center items-center space-x-1'>
-                        <Archive className="w-5 h-5" />
-                        <span>Archive</span>
-                    </button>
-                    <button className='px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg flex justify-center items-center space-x-1'>
-                        <ExternalLink className='w-5 h-5' />
-                        <span>Open</span>
-                    </button>
-                </Modal.Footer>
-            </Modal>
+            {/* View Modal */}
+            <BlogViewModal post={postData} modalView={modalView} setModalView={() => setModalView(false)} />
 
             {/* Data content */}
             <div className=' flex flex-col mt-4 border rounded-xl shadow-xl shadow-slate-50'>
                 <div className='flex p-3'>
-                    <input type='text' className='border px-5 py-1 rounded-lg mr-4' placeholder='Search...' />
-                    <Select className=' bg-white rounded-lg py-1 w-1/3'
+                    <input type='text' className='border border-slate-300 px-5 py-1 rounded-lg mr-4' placeholder='Search...' />
+                    <Select className=' bg-white rounded-lg w-1/3'
                             options={options}
                             isMulti
                             value={selectedOptions}
@@ -101,13 +85,14 @@ const Blog = ({ posts }) => {
                             // unstyled
                             // styles={{
                             //     option: () => ({
-                            //         backgroundColor: '#F1F5F9'
+                            //         backgroundColor: '#F1F5F9',
+                            //         margin: "3px"
                             //     })
                             // }}
                         />
                 </div>
 
-                {/* Table */}
+                {/* Table -> parse it into component later */}
                 <table className='border mt-4'>
                     <thead className='bg-slate-50 font-semibold'>
                         <tr>
@@ -186,6 +171,8 @@ const Blog = ({ posts }) => {
 }
 
 // Admin layout
-Blog.layout = page => <AdminLayout children={page} />
+Blog.layout = (page) => {
+    return <AdminLayout children={page} navActive={page.props.navActive}/>
+}
 
 export default Blog

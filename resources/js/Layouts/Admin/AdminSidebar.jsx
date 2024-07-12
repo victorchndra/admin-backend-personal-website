@@ -34,8 +34,8 @@ const variants = {
     nonExpanded: { width: "5%" }
 }
 
-const AdminSidebar = () => {
-    const [isActiveNav, setIsActiveNav] = useState(0);
+const AdminSidebar = ({navActive}) => {
+    const [isActiveNav, setIsActiveNav] = useState(navActive);
     const [isExpanded, setIsExpanded] = useState(true);
 
     return (
@@ -58,8 +58,8 @@ const AdminSidebar = () => {
 
             <div className='flex flex-col space-y-3 mt-9 grow'>
                 {navLinks.map((navLink, index) => (
-                    <Link key={index} href={navLink.href} className={'flex space-x-3 p-3 rounded-md hover:bg-slate-100 cursor-pointer' + (isActiveNav === index ? ' bg-slate-100' : '') + (isExpanded ? ' justify-start' : ' justify-center')}
-                        onClick={() => setIsActiveNav(index)}>
+                    <Link key={index} href={navLink.href} className={'flex space-x-3 p-3 rounded-md hover:bg-slate-100 cursor-pointer' + (isActiveNav === navLink.name ? (' bg-slate-100') : '') + (isExpanded ? ' justify-start' : ' justify-center')}
+                        onClick={() => setIsActiveNav(navLink.name)}>
                         <navLink.icon className='w-5 h-5'/>
                         <span className={isExpanded ? 'block' : 'hidden'}>{navLink?.name}</span>
                     </Link>

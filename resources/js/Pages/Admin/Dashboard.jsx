@@ -22,6 +22,8 @@ const Dashboard = () => {
 }
 
 // Admin Layout
-Dashboard.layout = page => <AdminLayout children={page} />
+Dashboard.layout = page => {
+    return <AdminLayout children={page} navActive={page.props.navActive}/>
+}
 
 export default Dashboard

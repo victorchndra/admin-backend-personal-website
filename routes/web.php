@@ -20,13 +20,17 @@ Route::get('/project', function() {
 // Admin Area
 Route::prefix('/admin')->group(function () {
     Route::get('/dashboard', function () {
-        return inertia('Admin/Dashboard');
+        return inertia('Admin/Dashboard', [
+            'navActive' => 'Dashboard',
+        ]);
     });
     // Admin blog resource controller
     Route::resource('/blogs', AdminBlogController::class);
 
     Route::get('/projects', function () {
-        return inertia('Admin/Project');
+        return inertia('Admin/Project/Project', [
+            'navActive' => 'Projects',
+        ]);
     });
     Route::get('/login', function () {
         return inertia('Admin/Login');

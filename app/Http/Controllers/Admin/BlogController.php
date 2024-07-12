@@ -16,8 +16,9 @@ class BlogController extends Controller
         // $posts = Blog::with('categories')->get();
         $posts = Blog::with('categories')->get();
         // dd($posts);
-        return inertia('Admin/Blog', [
+        return inertia('Admin/Blog/Blog', [
             'posts' => $posts,
+            'navActive' => 'Blogs'
         ]);
     }
 
@@ -26,7 +27,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Admin/Blog/Create');
     }
 
     /**

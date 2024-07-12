@@ -1,4 +1,4 @@
-import AdminLayout from '../../Layouts/Admin/AdminLayout'
+import AdminLayout from '../../../Layouts/Admin/AdminLayout'
 
 const Project = () => {
   return (
@@ -12,6 +12,8 @@ const Project = () => {
 }
 
 // Admin layout
-Project.layout = page => <AdminLayout children={page} />
+Project.layout = page => {
+    return <AdminLayout children={page} navActive={page.props.navActive}/>
+}
 
 export default Project

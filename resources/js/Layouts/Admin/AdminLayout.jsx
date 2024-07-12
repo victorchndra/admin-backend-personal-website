@@ -1,18 +1,19 @@
 import AdminSidebar from "./AdminSidebar"
 
-const AdminLayout = ({children}) => {
-  return (
-    // Container screen dashboard
-    <div className="flex w-full">
-        {/* Sidebar */}
-        <AdminSidebar />
+const AdminLayout = ({children, navActive}) => {
 
-        {/* Main Content */}
-        <main className="grow">
-            {children}
-        </main>
-    </div>
-  )
+    return (
+        // Container screen dashboard
+        <div className="flex w-full">
+            {/* Sidebar */}
+            <AdminSidebar navActive={navActive}/>
+
+            {/* Main Content */}
+            <main className="grow">
+                {children}
+            </main>
+        </div>
+    )
 }
 
 export default AdminLayout
