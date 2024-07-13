@@ -2,11 +2,26 @@ import React, { useState } from 'react'
 import AdminLayout from '../../../Layouts/Admin/AdminLayout'
 import { ToggleSwitch } from 'flowbite-react'
 import { ChevronsLeft, Trash2 } from 'lucide-react'
-import { Link } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
 import ReactSelect from 'react-select'
 
 const Create = ({navActive}) => {
+    const { userAuth } = usePage().props;
+
     const [isPublish, setIsArchive] = useState(true)
+
+    const handleTogglePublish = () => {
+        setIsArchive(!isPublish)
+        setData('is_archive', isPublish)
+    }
+
+    const { data, setData, post, processing, errors } = useForm({
+        title: '',
+        summary: '',
+        body: '',
+        cover_img: '',
+        is_archive: false,
+    });
 
     const [categoryList, setCategoryList] = useState([
         { category: '' },
@@ -26,7 +41,7 @@ const Create = ({navActive}) => {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log('tes')
+        post(route('blogs.store'), data);
     }
 
     return (
@@ -53,11 +68,27 @@ const Create = ({navActive}) => {
                         </div>
                         <hr/>
                         <div className='flex flex-col px-5 py-4 space-y-4'>
-                            <input type='text' placeholder='Post title' className=' border-slate-400 rounded-lg px-5 py-3'/>
-                            <textarea placeholder='Summary' className=' border-slate-400 rounded-lg px-5 py-4 resize-none' rows="5"></textarea>
+                            <div className='flex flex-col'>
+                                <input type='text' placeholder='Post title' className={'border-slate-400 rounded-lg px-5 py-3 ' + (errors.title && ' !border-red-500')}
+                                    onChange={(e) => setData('title', e.target.value)}
+                                    value={data.title}
+                                />
+                                {errors.title && <span className='text-red-500 text-sm'>{errors.title}</span>}
+                            </div>
+                            <div className='flex flex-col'>
+                                <textarea placeholder='Summary' className={'border-slate-400 rounded-lg px-5 py-4 resize-none ' + (errors.summary && ' !border-red-500')} rows="5"
+                                    onChange={(e) => setData('summary', e.target.value)}
+                                    value={data.summary}
+                                ></textarea>
+                                {errors.summary && <span className='text-red-500 text-sm'>{errors.summary}</span>}
+                            </div>
                             <div className='flex flex-col'>
                                 <h2 className='text-md'>Content</h2>
-                                <textarea placeholder='Write something awesome...' className='border-slate-400 rounded-lg px-5 py-4 mt-2' rows="15"></textarea>
+                                <textarea placeholder='Write something awesome...' className={'border-slate-400 rounded-lg px-5 py-4 mt-2 ' + (errors.body && ' !border-red-500')} rows="15"
+                                    onChange={(e) => setData('body', e.target.value)}
+                                    value={data.body}
+                                ></textarea>
+                                {errors.body && <span className='text-red-500 text-sm'>{errors.body}</span>}
                             </div>
                             <div className='flex flex-col'>
                                 <h2 className='text-md'>Cover</h2>
@@ -96,12 +127,13 @@ const Create = ({navActive}) => {
                     <div className='flex self-end items-center mt-5 '>
                         {/* toggle publish / archive */}
                         <div className='flex space-x-3 w-28 mr-6'>
-                            <ToggleSwitch checked={isPublish} onChange={setIsArchive} />
+                            <ToggleSwitch checked={isPublish} onChange={handleTogglePublish} />
                             <span>{isPublish ? 'Publish' : 'Archive'}</span>
+                            {console.log(isPublish)}
                         </div>
 
                         {/* button create post */}
-                        <button className='bg-slate-800 text-white px-4 py-2 rounded-lg'>Create Post</button>
+                        <button type='submit' className='bg-slate-800 text-white px-4 py-2 rounded-lg' disabled={processing}>Create Post</button>
                     </div>
                 </div>
             </form>

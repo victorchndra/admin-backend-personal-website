@@ -20,13 +20,12 @@ class BlogFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'slug' => Str::slug(fake()->sentence()),
-            'summary' => fake()->text(50),
-            'body' => fake()->text(500),
-            'cover_img_name' => fake()->sentence(2), //temporary instance
-            'cover_img_path' => fake()->sentence(1), //temporary instance
+            'summary' => fake()->text(500),
+            'body' => fake()->text(2000),
+            'cover_img' => fake()->word(), //temporary instance
             'upvote' => fake()->randomNumber(2, false),
             'is_archive' => false,
-            'user_id' => 1,
+            'created_by' => 1,
             'published_at' => fake()->dateTime()
         ];
     }

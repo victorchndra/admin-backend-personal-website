@@ -10,7 +10,9 @@ const BlogViewModal = ({ post, modalView, setModalView }) => {
         </Modal.Header>
         <Modal.Body className='flex flex-col space-y-3'>
             <span className='text-slate-600 text-sm'>{moment(post.created_at).format('dddd, DD MMMM YYYY - HH:mm:ss')}</span>
-            <img src='' alt={post.img_name} className='bg-slate-200 h-72 rounded-lg'/>
+            <div className=' h-72'>
+                <img src='' alt="cover image" className='bg-slate-200 h-72 rounded-lg'/>
+            </div>
             <div className='flex space-x-1 items-center'>
                 <span className='text-sm'>Category: </span>
                 {post.categories.length > 0

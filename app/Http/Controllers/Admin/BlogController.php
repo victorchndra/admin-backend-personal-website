@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Blog;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -14,7 +16,7 @@ class BlogController extends Controller
     public function index()
     {
         // $posts = Blog::with('categories')->get();
-        $posts = Blog::with('categories')->get();
+        $posts = Blog::latest()->with('categories')->get();
         // dd($posts);
         return inertia('Admin/Blog/Blog', [
             'posts' => $posts,
@@ -37,7 +39,34 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fields = $request->validate([
+            'title' => 'required',
+            'summary' => 'required', //|min:10
+            'body' => 'required', //|min:50
+            'cover_img' => 'nullable',
+            'is_archive' => 'boolean',
+        ]);
+
+        $fields = [
+            'title' => $request['title'],
+            'summary' => $request['summary'],
+            'body' => $request['body'],
+            'cover_img' => $request['cover_img'],
+            'is_archive' => $request['is_archive'],
+            'upvote' => 0,
+            'created_by' => Auth::user()->id,
+            'slug' => Str::slug($request['title']),
+        ];
+
+        if(!$request['is_archive']) {
+            $fields['published_at'] = now();
+        }
+
+        Blog::create($fields);
+
+        return redirect()->route('blogs.index')->with([
+            'success' => 'New post has been added!'
+        ]);
     }
 
     /**

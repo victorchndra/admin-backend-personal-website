@@ -16,12 +16,10 @@ class Blog extends Model
         'slug',
         'summary',
         'body',
-        'cover_img_name',
-        'cover_img_path',
+        'cover_img',
         'upvote',
         'is_archive',
-        'user_id',
-        'category_id',
+        'created_by',
         'published_at',
     ];
 
