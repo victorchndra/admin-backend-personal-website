@@ -21,6 +21,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Victor Chandra',
             'email' => 'v@gmail.com',
             'username' => 'victor',
+            'password' => '123',
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Guest User',
+            'email' => 'guest@gmail.com',
+            'username' => 'guest',
+            'password' => 'guest',
+            'role' => 'guest',
         ]);
 
         Blog::factory(20)->create();
