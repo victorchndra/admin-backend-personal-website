@@ -9,7 +9,7 @@ import {
     ChevronRight,
     ChevronLeft
 } from 'lucide-react'
-import { Link } from '@inertiajs/react'
+import { Link, useForm } from '@inertiajs/react'
 
 const navLinks = [
     {
@@ -38,6 +38,13 @@ const AdminSidebar = ({navActive}) => {
     const [isActiveNav, setIsActiveNav] = useState(navActive);
     const [isExpanded, setIsExpanded] = useState(true);
 
+    const { post } = useForm();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        post(route('auth.logout'));
+    }
+
     return (
         // Container sidebar with motion prefix to use motion frame
         <motion.div
@@ -65,10 +72,11 @@ const AdminSidebar = ({navActive}) => {
                     </Link>
                 ))}
             </div>
-            <div className='flex space-x-3 p-3 rounded-md bg-red-500 hover:bg-red-400 text-white cursor-pointer'>
+
+            <button type='button' onClick={handleLogout} className='flex space-x-3 p-3 rounded-md bg-red-500 hover:bg-red-400 text-white cursor-pointer'>
                 <LogOut/>
                 <span className={isExpanded ? 'block' : 'hidden'}>Logout</span>
-            </div>
+            </button>
         </motion.div>
     )
 }
