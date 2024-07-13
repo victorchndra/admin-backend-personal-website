@@ -27,7 +27,9 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Blog/Create');
+        return inertia('Admin/Blog/Create', [
+            'navActive' => 'Blogs'
+        ]);
     }
 
     /**

@@ -67,14 +67,13 @@ const Blog = ({ posts, navActive }) => {
                     >
                     + New Post
                 </Link>
-
             </div>
 
             {/* View Modal */}
             <BlogViewModal post={postData} modalView={modalView} setModalView={() => setModalView(false)} />
 
             {/* Data content */}
-            <div className=' flex flex-col mt-4 border rounded-xl shadow-xl shadow-slate-50'>
+            <div className=' flex flex-col my-8 border rounded-xl shadow-xl shadow-slate-50'>
                 <div className='flex p-3'>
                     <input type='text' className='border border-slate-300 px-5 py-1 rounded-lg mr-4' placeholder='Search...' />
                     <Select className=' bg-white rounded-lg w-1/3'
@@ -116,7 +115,7 @@ const Blog = ({ posts, navActive }) => {
                                     <div className='flex flex-col space-y-1'>
                                         {post.categories.length > 0
                                             ? post.categories.map((category, index) => (
-                                                <span key={index} className=' text-xs bg-slate-700 text-white py-1 px-2 rounded-lg max-w-max'>{category.name}</span>))
+                                                <span key={index} className=' text-center text-xs bg-slate-700 text-white py-1 px-2 rounded-lg w-fit'>{category.name}</span>))
                                             : (<span className='text-xs italic text-slate-400'>not defined</span>)}
                                     </div>
                                 </td>
