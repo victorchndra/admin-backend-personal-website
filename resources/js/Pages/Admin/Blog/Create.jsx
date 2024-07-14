@@ -4,7 +4,6 @@ import { ToggleSwitch } from 'flowbite-react'
 import { ChevronsLeft, Trash2 } from 'lucide-react'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import ReactSelect from 'react-select'
-import ReactSelectComponent from './ReactSelectComponent'
 
 const Create = ({navActive, categories}) => {
 
@@ -134,6 +133,16 @@ const Create = ({navActive, categories}) => {
                                             />
                                             {errors.categories_id && (<span className='text-red-500 text-sm'>{errors.categories_id}</span>)}
                                         </div>
+
+                                        { //testing debug
+                                            /* categoryList.map((category, index) => (
+                                                <ul key={index}>
+                                                    {category.category_id && <li>{category.category_id}</li>}
+                                                </ul>
+                                            )) */
+                                            //console.log(data.categories_id)
+                                            //onChange={(e) => setData('title', e.target.value)}
+                                        }
 
                                         {categoryList.length > 1 && (
                                             <button type='button' onClick={() => handleCategoryRemove(index)} className='border border-slate-400 rounded-md p-2 hover:bg-red-500 hover:text-white hover:border-red-500'>
