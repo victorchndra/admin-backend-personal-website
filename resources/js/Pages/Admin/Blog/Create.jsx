@@ -43,15 +43,15 @@ const Create = ({navActive, categories}) => {
         setCategoryList([...categoryList, { category_id: '' }])
     }
 
-    // logic of remove the trash button of category list if there is only one object categoryList left
+    // logic of remove the trash button at category list if there is only one object categoryList left
     const handleCategoryRemove = (index) => {
         const category = [...categoryList];
         category.splice(index, 1);
         setCategoryList(category);
     }
 
-    // set selected list into categoryList state
     const handleSelectChange = (e, index) => {
+        // stores the new selected option into new index of an array to var
         const list = [...categoryList];
         list[index]['category_id'] = e.value;
         setCategoryList(list);
