@@ -7,6 +7,7 @@ use App\Models\Category;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'guest',
         ]);
 
-        Blog::factory(20)->create();
+        Blog::factory(30)->create();
 
         Category::factory()->create([
             'name' => 'Technology'
@@ -49,6 +50,21 @@ class DatabaseSeeder extends Seeder
         ]);
         Category::factory()->create([
             'name' => 'Stack'
+        ]);
+
+        DB::table('category_post')->insert([
+            ['blog_id' => 1, 'category_id' => 1], // Data pertama
+            ['blog_id' => 1, 'category_id' => 2],
+            ['blog_id' => 2, 'category_id' => 2],
+            ['blog_id' => 2, 'category_id' => 3],
+            ['blog_id' => 3, 'category_id' => 1],
+            ['blog_id' => 4, 'category_id' => 1],
+            ['blog_id' => 4, 'category_id' => 2],
+            ['blog_id' => 4, 'category_id' => 3],
+            ['blog_id' => 5, 'category_id' => 5],
+            ['blog_id' => 5, 'category_id' => 4],
+            ['blog_id' => 6, 'category_id' => 2],
+            ['blog_id' => 6, 'category_id' => 5],
         ]);
     }
 }

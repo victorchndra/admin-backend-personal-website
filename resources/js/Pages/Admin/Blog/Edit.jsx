@@ -33,9 +33,11 @@ const Edit = ({navActive, blog, categories}) => {
 
     //list category ================================
     // category view (add category button state)
-    const [categoryList, setCategoryList] = useState(blog.categories.map((category) => (
-        { category_id: category.id, category_name: category.name }
-    )));
+    const [categoryList, setCategoryList] = useState(blog.categories.length !== 0
+        ? blog.categories.map((category) => (
+            { category_id: category.id, category_name: category.name }
+            ))
+        : [{ category_id: '', category_name: '' }]);
 
     // used to adds new select element of category into categoryList object
     const handleAddCategory = () => {
