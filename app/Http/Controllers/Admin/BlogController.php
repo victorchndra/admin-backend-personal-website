@@ -6,6 +6,7 @@ use App\Models\Blog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -29,8 +30,11 @@ class BlogController extends Controller
      */
     public function create()
     {
+        $categories = Category::all();
+
         return inertia('Admin/Blog/Create', [
-            'navActive' => 'Blogs'
+            'navActive' => 'Blogs',
+            'categories' => $categories
         ]);
     }
 
@@ -40,13 +44,14 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'title' => 'required',
+            'title' => 'required|unique:blogs,title',
             'summary' => 'required', //|min:10
             'body' => 'required', //|min:50
             'cover_img' => 'nullable',
             'is_archive' => 'boolean',
+            'categories_id' => 'required',
         ]);
-
+// dd($request['categories_id']);
         $fields = [
             'title' => $request['title'],
             'summary' => $request['summary'],
@@ -62,7 +67,7 @@ class BlogController extends Controller
             $fields['published_at'] = now();
         }
 
-        Blog::create($fields);
+        Blog::create($fields)->categories()->attach($request['categories_id']);
 
         return redirect()->route('blogs.index')->with([
             'success' => 'New post has been added!'

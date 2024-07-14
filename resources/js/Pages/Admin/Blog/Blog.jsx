@@ -125,7 +125,7 @@ const Blog = ({ posts, navActive }) => {
                                         ? (<span className='text-xs text-white px-2 py-1 rounded-lg bg-yellow-400'>Archived</span>)
                                         : (<span className='text-xs text-white px-2 py-1 rounded-lg bg-green-500'>Published</span>)}
                                 </td>
-                                <td>{moment(post.published_at).format('DD MMM YYYY - HH:mm:ss (A)')}</td>
+                                <td>{post.published_at ? moment(post.published_at).format('DD MMM YYYY - HH:mm:ss (A)') : (<span className='text-sm text-slate-500'>-</span>)}</td>
                                 <td>
                                     <button type='button' className=' hover:bg-slate-200 p-1 rounded-full'
                                         onClick={() => {

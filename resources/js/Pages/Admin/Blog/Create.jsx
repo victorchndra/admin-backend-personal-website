@@ -4,16 +4,9 @@ import { ToggleSwitch } from 'flowbite-react'
 import { ChevronsLeft, Trash2 } from 'lucide-react'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import ReactSelect from 'react-select'
+import ReactSelectComponent from './ReactSelectComponent'
 
-const Create = ({navActive}) => {
-    const { userAuth } = usePage().props;
-
-    const [isPublish, setIsArchive] = useState(true)
-
-    const handleTogglePublish = () => {
-        setIsArchive(!isPublish)
-        setData('is_archive', isPublish)
-    }
+const Create = ({navActive, categories}) => {
 
     const { data, setData, post, processing, errors } = useForm({
         title: '',
@@ -21,28 +14,55 @@ const Create = ({navActive}) => {
         body: '',
         cover_img: '',
         is_archive: false,
+        categories_id: [],
     });
 
-    const [categoryList, setCategoryList] = useState([
-        { category: '' },
-    ]);
+    //publish toggle ================================
+    const [isPublish, setIsArchive] = useState(true)
 
-    const handleAddCategory = () => {
-        // add {category:''} into categoryList using [...categoryList] cause the type of the state is array
-        setCategoryList([...categoryList, { category: '' }])
+    const handleTogglePublish = () => {
+        setIsArchive(!isPublish)
+        setData('is_archive', isPublish)
     }
 
-    const handleCategoryRemove = (index) => {
-        const category = [...categoryList];
-        category.splice(index, 1);
-        console.log(category);
-        setCategoryList(category);
-    }
-
+    //submit ================================
     const submit = (e) => {
         e.preventDefault();
         post(route('blogs.store'), data);
     }
+
+
+    //list category ================================
+    // category view (add category button state)
+    const [categoryList, setCategoryList] = useState([
+        { category_id : "" }
+    ]);
+
+    // used to adds new select element of category into categoryList object
+    const handleAddCategory = () => {
+        setCategoryList([...categoryList, { category_id: '' }])
+    }
+
+    // logic of remove the trash button of category list if there is only one object categoryList left
+    const handleCategoryRemove = (index) => {
+        const category = [...categoryList];
+        category.splice(index, 1);
+        setCategoryList(category);
+    }
+
+    // set selected list into categoryList state
+    const handleSelectChange = (e, index) => {
+        const list = [...categoryList];
+        list[index]['category_id'] = e.value;
+        setCategoryList(list);
+        setData('categories_id', categoryList);
+    }
+
+    // select all the category options that have not been selected yet
+    const filteredOptions = categories.map((category) => ({
+        value: category.id,
+        label: category.name
+    })).filter((category) => !categoryList.some(item => item.category_id === category.value))
 
     return (
         <div className='flex flex-col py-12 px-10'>
@@ -104,10 +124,17 @@ const Create = ({navActive}) => {
                         </div>
                         <hr />
                         <div className='flex flex-col px-5 py-4 space-y-4'>
-                            {categoryList.map((singleCategory, index) => (
+                            {categoryList.map((category, index) => (
                                 <div key={index}>
-                                    <div className='flex space-x-2'>
-                                        <ReactSelect className='grow' value={singleCategory.category}/>
+                                    <div className='flex items-start space-x-2'>
+                                        <div className='flex grow flex-col'>
+                                            <ReactSelect className='grow '
+                                                options={filteredOptions}
+                                                onChange={(e) => handleSelectChange(e, index)}
+                                            />
+                                            {errors.categories_id && (<span className='text-red-500 text-sm'>{errors.categories_id}</span>)}
+                                        </div>
+
                                         {categoryList.length > 1 && (
                                             <button type='button' onClick={() => handleCategoryRemove(index)} className='border border-slate-400 rounded-md p-2 hover:bg-red-500 hover:text-white hover:border-red-500'>
                                                 <Trash2 className=' w-5 h-5' />
@@ -115,8 +142,8 @@ const Create = ({navActive}) => {
                                         )}
                                     </div>
 
-                                    {/* show button at the last of list and limit by total data (4 is total) */}
-                                    {categoryList.length - 1 === index && categoryList.length < 4 && (
+                                    {/* show button at the last of list and limit by total data (length of data categories is total) */}
+                                    {categoryList.length - 1 === index && categoryList.length < categories.length && (
                                         <button type='button' className='flex w-fit text-cyan-500 hover:text-cyan-600 mt-4' onClick={handleAddCategory}><span>+ Add Category</span></button>
                                     )}
                                 </div>
@@ -129,7 +156,6 @@ const Create = ({navActive}) => {
                         <div className='flex space-x-3 w-28 mr-6'>
                             <ToggleSwitch checked={isPublish} onChange={handleTogglePublish} />
                             <span>{isPublish ? 'Publish' : 'Archive'}</span>
-                            {console.log(isPublish)}
                         </div>
 
                         {/* button create post */}
