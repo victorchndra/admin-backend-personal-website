@@ -6,6 +6,7 @@ import AdminLayout from '../../../Layouts/Admin/AdminLayout'
 import Select from 'react-select'
 import moment from 'moment'
 import BlogViewModal from '../../../Components/BlogViewModal'
+import BlogDeleteModal from '../../../Components/BlogDeleteModal'
 
 const options = [
     { value: 'Technology', label: 'Technology' },
@@ -33,7 +34,7 @@ const Blog = ({ posts, navActive }) => {
         setSelectedOptions(selectedOption)
     }
 
-    const toggleModal = (id, title, summary, body, img_name, is_archive, published_at, created_at, updated_at, categories) => {
+    const viewModalClicked = (id, title, summary, body, img_name, is_archive, published_at, created_at, updated_at, categories) => {
         const post = {
             id: id,
             title: title,
@@ -50,6 +51,15 @@ const Blog = ({ posts, navActive }) => {
         setPostData(post)
         setActionDropdown(false)
         setModalView(true)
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState({});
+
+    const deleteModalClicked = (id) => {
+        setDeleteId({ id: id })
+        setActionDropdown(false)
+        setDeleteModal(true)
     }
 
     return (
@@ -69,6 +79,7 @@ const Blog = ({ posts, navActive }) => {
 
             {/* View Modal */}
             <BlogViewModal post={postData} modalView={modalView} setModalView={() => setModalView(false)} />
+            <BlogDeleteModal post={deleteId} modalDelete={deleteModal} setModalDelete={setDeleteModal} />
 
             {/* Data content */}
             <div className=' flex flex-col my-8 border rounded-xl shadow-xl shadow-slate-50'>
@@ -138,21 +149,25 @@ const Blog = ({ posts, navActive }) => {
                                         <div className='border bg-white rounded-lg absolute w-[120px] right-20 p-1 shadow-md shadow-slate-100'>
                                             <ul className='flex flex-col space-y-1'>
                                                 <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'
-                                                    onClick={() => toggleModal(post.id, post.title, post.summary, post.body, post.img_name, post.is_archive, post.published_at, post.created_at, post.updated_at, post.categories)}
+                                                    onClick={() => viewModalClicked(post.id, post.title, post.summary, post.body, post.img_name, post.is_archive, post.published_at, post.created_at, post.updated_at, post.categories)}
                                                 >
                                                     <Eye className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>View</span>
                                                 </li>
+
                                                 <Link className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'
                                                     href={route('blogs.edit', post)}
                                                 >
                                                     <Pencil className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>Edit</span>
                                                 </Link>
-                                                <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer text-red-500'>
-                                                    <Trash2 className='w-4 h-4' />
-                                                    <span className='ml-3 text-sm'>Delete</span>
-                                                </li>
+
+                                                {post.is_archive == true && (
+                                                    <li onClick={() => deleteModalClicked(post.id)} className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer text-red-500'>
+                                                        <Trash2 className='w-4 h-4' />
+                                                        <span className='ml-3 text-sm'>Delete</span>
+                                                    </li>
+                                                )}
                                             </ul>
                                         </div>
                                         )

@@ -61,14 +61,6 @@ const Edit = ({navActive, blog, categories}) => {
         setCategoryList(list);
         setData('categories_id', categoryList);
     }
-    // blog.categories.map((c,index) => console.log(c.id ))
-    // console.log(categoryList)
-
-    // const [filteredOptions, setFilteredOptions] = useState(categories.map((category) => ({
-    //     value: category.id,
-    //     label: category.name
-    // })).filter((category) => !categoryList.some(item => item.category_id === category.value)));
-    // console.log(categories)
 
     // select all the category options that have not been selected yet
     const filteredOptions = categories.map((category) => ({
