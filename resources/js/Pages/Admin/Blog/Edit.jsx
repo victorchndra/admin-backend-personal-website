@@ -5,18 +5,19 @@ import { ChevronsLeft, Trash2 } from 'lucide-react'
 import { Link, useForm } from '@inertiajs/react'
 import ReactSelect from 'react-select'
 
-const Create = ({navActive, categories}) => {
-    const { data, setData, post, processing, errors } = useForm({
-        title: '',
-        summary: '',
-        body: '',
-        cover_img: '',
-        is_archive: false,
-        categories_id: [],
+const Edit = ({navActive, blog, categories}) => {
+    const { data, setData, put, processing, errors } = useForm({
+        title: blog.title,
+        summary: blog.summary,
+        body: blog.body,
+        cover_img: blog.cover_img,
+        is_archive: blog.is_archive,
+        categories_id: blog.categories.map((format) => ({ category_id: format.id, categories_name: format.name })),
     });
+    // console.log(blog.categories)
 
     //publish toggle ================================
-    const [isPublish, setIsArchive] = useState(true)
+    const [isPublish, setIsArchive] = useState(!blog.is_archive)
 
     const handleTogglePublish = () => {
         setIsArchive(!isPublish)
@@ -26,19 +27,19 @@ const Create = ({navActive, categories}) => {
     //submit ================================
     const submit = (e) => {
         e.preventDefault();
-        post(route('blogs.store'), data);
+        put(route('blogs.update', { blog: blog.id }) ,data);
     }
 
 
     //list category ================================
     // category view (add category button state)
-    const [categoryList, setCategoryList] = useState([
-        { category_id : "" }
-    ]);
-    // console.log(categoryList)
+    const [categoryList, setCategoryList] = useState(blog.categories.map((category) => (
+        { category_id: category.id, category_name: category.name }
+    )));
+
     // used to adds new select element of category into categoryList object
     const handleAddCategory = () => {
-        setCategoryList([...categoryList, { category_id: '' }])
+        setCategoryList([...categoryList, { category_id: '', category_name: '' }])
     }
 
     // logic of remove the trash button at category list if there is only one object categoryList left
@@ -46,15 +47,26 @@ const Create = ({navActive, categories}) => {
         const category = [...categoryList];
         category.splice(index, 1);
         setCategoryList(category);
+        setData('categories_id', category);
     }
 
     const handleSelectChange = (e, index) => {
         // stores the new selected option into new index of an array to var
         const list = [...categoryList];
+        // console.log(e);
         list[index]['category_id'] = e.value;
+        list[index]['category_name'] = e.label;
         setCategoryList(list);
         setData('categories_id', categoryList);
     }
+    // blog.categories.map((c,index) => console.log(c.id ))
+    // console.log(categoryList)
+
+    // const [filteredOptions, setFilteredOptions] = useState(categories.map((category) => ({
+    //     value: category.id,
+    //     label: category.name
+    // })).filter((category) => !categoryList.some(item => item.category_id === category.value)));
+    // console.log(categories)
 
     // select all the category options that have not been selected yet
     const filteredOptions = categories.map((category) => ({
@@ -62,12 +74,13 @@ const Create = ({navActive, categories}) => {
         label: category.name
     })).filter((category) => !categoryList.some(item => item.category_id === category.value))
 
+
     return (
         <div className='flex flex-col py-12 px-10'>
             <div className='flex justify-between items-center'>
                 <div>
-                    <h1 className='text-2xl font-bold'>Create New Post</h1>
-                    <span>What've you got today?</span>
+                    <h1 className='text-2xl font-bold'>Edit Post</h1>
+                    <span>is there something that needs to be changed?</span>
                 </div>
                 <Link
                     className='flex hover:underline'
@@ -127,12 +140,12 @@ const Create = ({navActive, categories}) => {
                                     <div className='flex items-start space-x-2'>
                                         <div className='flex grow flex-col'>
                                             <ReactSelect className='grow '
+                                                placeholder={category.category_name}
                                                 options={filteredOptions}
                                                 onChange={(e) => handleSelectChange(e, index)}
                                             />
                                             {errors.categories_id && (<span className='text-red-500 text-sm'>{errors.categories_id}</span>)}
                                         </div>
-
 
                                         {categoryList.length > 1 && (
                                             <button type='button' onClick={() => handleCategoryRemove(index)} className='border border-slate-400 rounded-md p-2 hover:bg-red-500 hover:text-white hover:border-red-500'>
@@ -157,8 +170,8 @@ const Create = ({navActive, categories}) => {
                             <span>{isPublish ? 'Publish' : 'Archive'}</span>
                         </div>
 
-                        {/* button create post */}
-                        <button type='submit' className='bg-slate-800 text-white px-4 py-2 rounded-lg' disabled={processing}>Create Post</button>
+                        {/* button update post */}
+                        <button type='submit' className='bg-slate-800 text-white px-4 py-2 rounded-lg' disabled={processing}>Update Post</button>
                     </div>
                 </div>
             </form>
@@ -166,8 +179,6 @@ const Create = ({navActive, categories}) => {
     )
 }
 
-Create.layout = page => {
-    return <AdminLayout children={page} navActive={page.props.navActive}/>
-}
+Edit.layout = page => <AdminLayout children={page} navActive={page.props.navActive}/>
 
-export default Create
+export default Edit

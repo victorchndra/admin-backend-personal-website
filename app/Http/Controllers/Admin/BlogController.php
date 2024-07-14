@@ -51,7 +51,7 @@ class BlogController extends Controller
             'is_archive' => 'boolean',
             'categories_id' => 'required',
         ]);
-// dd($request['categories_id']);
+
         $fields = [
             'title' => $request['title'],
             'summary' => $request['summary'],
@@ -66,8 +66,8 @@ class BlogController extends Controller
         if(!$request['is_archive']) {
             $fields['published_at'] = now();
         }
-
-        Blog::create($fields)->categories()->attach($request['categories_id']);
+// dd($request['categories_id']);
+        Blog::create($fields)->categories()->sync($request['categories_id']);
 
         return redirect()->route('blogs.index')->with([
             'success' => 'New post has been added!'
@@ -87,7 +87,11 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        return inertia('Admin/Blog/Edit', [
+            'navActive' => 'Blogs',
+            'blog' => $blog->load('categories'),
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -95,7 +99,42 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        $fields = $request->validate([
+            'title' => 'required',
+            'summary' => 'required', //|min:10
+            'body' => 'required', //|min:50
+            'cover_img' => 'nullable',
+            'is_archive' => 'boolean',
+            'categories_id' => 'required',
+        ]);
+
+        $fields = [
+            'title' => $request['title'],
+            'summary' => $request['summary'],
+            'body' => $request['body'],
+            'cover_img' => $request['cover_img'],
+            'is_archive' => $request['is_archive'],
+            'upvote' => 0,
+            'created_by' => Auth::user()->id,
+            'slug' => Str::slug($request['title']),
+        ];
+
+        if(!$request['is_archive']) {
+            $fields['published_at'] = now();
+        }
+
+        // dd($request['categories_id']);
+        $categoryIds = array_map(function ($category) {
+            return $category['category_id']; // Asumsikan 'id' adalah key untuk ID dalam data request
+        }, $request['categories_id']);
+
+        // dd($categoryIds);
+        $blog->update($fields);
+        $blog->categories()->sync($categoryIds);
+
+        return redirect()->route('blogs.index')->with([
+            'success' => 'Post has been updated!'
+        ]);
     }
 
     /**

@@ -33,15 +33,13 @@ const Blog = ({ posts, navActive }) => {
         setSelectedOptions(selectedOption)
     }
 
-    const toggleModal = (id, title, summary, body, img_name, img_path, upvote, is_archive, published_at, created_at, updated_at, categories) => {
+    const toggleModal = (id, title, summary, body, img_name, is_archive, published_at, created_at, updated_at, categories) => {
         const post = {
             id: id,
             title: title,
             summary: summary,
             body: body,
             img_name: img_name,
-            img_path: img_path,
-            upvote: upvote,
             is_archive: is_archive,
             published_at: published_at,
             created_at: created_at,
@@ -101,7 +99,7 @@ const Blog = ({ posts, navActive }) => {
                             <td>Category</td>
                             <td><ThumbsUp className='w-4 h-4'/></td>
                             <td>Archive Status</td>
-                            <td>Published at</td>
+                            <td>Last published</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -140,14 +138,17 @@ const Blog = ({ posts, navActive }) => {
                                         <div className='border bg-white rounded-lg absolute w-[120px] right-20 p-1 shadow-md shadow-slate-100'>
                                             <ul className='flex flex-col space-y-1'>
                                                 <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'
-                                                    onClick={() => toggleModal(post.id, post.title, post.summary, post.body, post.cover_img_name, post.cover_img_path, post.upvote, post.is_archive, post.published_at, post.created_at, post.updated_at, post.categories)}>
+                                                    onClick={() => toggleModal(post.id, post.title, post.summary, post.body, post.img_name, post.is_archive, post.published_at, post.created_at, post.updated_at, post.categories)}
+                                                >
                                                     <Eye className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>View</span>
                                                 </li>
-                                                <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'>
+                                                <Link className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'
+                                                    href={route('blogs.edit', post)}
+                                                >
                                                     <Pencil className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>Edit</span>
-                                                </li>
+                                                </Link>
                                                 <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer text-red-500'>
                                                     <Trash2 className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>Delete</span>

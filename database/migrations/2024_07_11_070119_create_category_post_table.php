@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('category_post', function (Blueprint $table) {
             // define fields that will be the foreign key
+            $table->id();
             $table->unsignedBigInteger('blog_id');
             $table->unsignedBigInteger('category_id');
+            $table->timestamps(false);
 
             // category_id & blog_id are foreign key from the table categories & blogs referenced by ID
             $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
-            $table->primary(['category_id', 'blog_id']);
+            $table->primary(['id', 'category_id', 'blog_id']);
         });
     }
 
