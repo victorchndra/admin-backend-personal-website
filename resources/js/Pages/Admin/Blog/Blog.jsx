@@ -34,21 +34,8 @@ const Blog = ({ posts, navActive }) => {
         setSelectedOptions(selectedOption)
     }
 
-    const viewModalClicked = (id, title, summary, body, img_name, is_archive, published_at, created_at, updated_at, categories) => {
-        const post = {
-            id: id,
-            title: title,
-            summary: summary,
-            body: body,
-            img_name: img_name,
-            is_archive: is_archive,
-            published_at: published_at,
-            created_at: created_at,
-            updated_at: updated_at,
-            categories: categories
-        }
-
-        setPostData(post)
+    const viewModalClicked = (postObj) => {
+        setPostData(postObj)
         setActionDropdown(false)
         setModalView(true)
     }
@@ -78,7 +65,7 @@ const Blog = ({ posts, navActive }) => {
             </div>
 
             {/* View Modal */}
-            <BlogViewModal post={postData} modalView={modalView} setModalView={() => setModalView(false)} />
+            <BlogViewModal post={postData} modalView={modalView} setModalView={setModalView} />
             <BlogDeleteModal post={deleteId} modalDelete={deleteModal} setModalDelete={setDeleteModal} />
 
             {/* Data content */}
@@ -149,7 +136,7 @@ const Blog = ({ posts, navActive }) => {
                                         <div className='border bg-white rounded-lg absolute w-[120px] right-20 p-1 shadow-md shadow-slate-100'>
                                             <ul className='flex flex-col space-y-1'>
                                                 <li className='flex items-center px-3 py-2 rounded-md hover:bg-slate-50 cursor-pointer'
-                                                    onClick={() => viewModalClicked(post.id, post.title, post.summary, post.body, post.img_name, post.is_archive, post.published_at, post.created_at, post.updated_at, post.categories)}
+                                                    onClick={() => viewModalClicked(post)}
                                                 >
                                                     <Eye className='w-4 h-4' />
                                                     <span className='ml-3 text-sm'>View</span>

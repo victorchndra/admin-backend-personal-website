@@ -6,8 +6,6 @@ import { useForm } from '@inertiajs/react';
 const BlogDeleteModal = ({ post, modalDelete, setModalDelete }) => {
     const { delete: destroy } = useForm();
 
-    const modalRef = useRef(null);
-
     const deletePost = (e) => {
         e.preventDefault();
         destroy(route('blogs.destroy', post.id))
@@ -15,7 +13,7 @@ const BlogDeleteModal = ({ post, modalDelete, setModalDelete }) => {
     }
 
     return (
-        <Modal show={modalDelete} size="md" onClose={() => setModalDelete(false)} popup ref={modalRef}>
+        <Modal show={modalDelete} size="md" onClose={() => setModalDelete(false)} popup>
             <Modal.Header />
             <Modal.Body>
                 <div className="text-center">

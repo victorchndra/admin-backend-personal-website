@@ -79,7 +79,10 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        //
+        return inertia('Admin/Blog/Show', [
+            'navActive' => 'Blogs',
+            'post' => $blog->load('categories')
+        ]);
     }
 
     /**
@@ -99,7 +102,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        $fields = $request->validate([
+        $fields =  $request->validate([
             'title' => 'required',
             'summary' => 'required', //|min:10
             'body' => 'required', //|min:50
@@ -123,18 +126,27 @@ class BlogController extends Controller
             $fields['published_at'] = now();
         }
 
-        // dd($request['categories_id']);
         $categoryIds = array_map(function ($category) {
-            return $category['category_id']; // Asumsikan 'id' adalah key untuk ID dalam data request
+            return $category['category_id']; // 'category_id' is a ID key from data request
         }, $request['categories_id']);
 
-        // dd($categoryIds);
         $blog->update($fields);
         $blog->categories()->sync($categoryIds);
 
         return redirect()->route('blogs.index')->with([
             'success' => 'Post has been updated!'
         ]);
+
+
+
+        // if((isset($request['title']) && isset($request['summary']) && isset($request['body']) && isset($request['categories_id']))) {
+
+        // }
+
+        // dd($request['is_archive']);
+        // $blog->is_archive = $request['is_archive'];
+        // $blog->save();
+        // return redirect()->route('blogs.index');
     }
 
     /**
