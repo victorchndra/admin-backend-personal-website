@@ -14,11 +14,16 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // $posts = Blog::with('categories')->get();
         $posts = Blog::latest()->with('categories')->get();
-        // dd($posts);
+
+        if($request->expectsJson()) {
+            $posts = Blog::latest()->with('categories')->paginate(10);
+            return $posts;
+        }
+
         return inertia('Admin/Blog/Blog', [
             'posts' => $posts,
             'navActive' => 'Blogs'
