@@ -77,7 +77,7 @@ const Create = ({navActive, categories}) => {
                 </Link>
             </div>
 
-            <form onSubmit={submit} className='flex flex-col items-center'>
+            <form onSubmit={submit} className='flex flex-col items-center' encType='multipart/form-data'>
                 <div className='flex flex-col w-3/4 my-8'>
                     <div className=' flex flex-col mt-4 border rounded-xl shadow-xl shadow-slate-50'>
                         <div className='flex flex-col px-5 py-4'>
@@ -110,7 +110,7 @@ const Create = ({navActive, categories}) => {
                             </div>
                             <div className='flex flex-col'>
                                 <h2 className='text-md'>Cover</h2>
-                                <input type='file' className='mt-2'/>
+                                <input type='file' className='mt-2' onChange={(e) => setData('cover_img', e.target.files[0])}/>
                             </div>
                         </div>
                     </div>

@@ -48,6 +48,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $fields = $request->validate([
             'title' => 'required|unique:blogs,title',
             'summary' => 'required', //|min:10
@@ -61,12 +62,15 @@ class BlogController extends Controller
             'title' => $request['title'],
             'summary' => $request['summary'],
             'body' => $request['body'],
-            'cover_img' => $request['cover_img'],
             'is_archive' => $request['is_archive'],
             'upvote' => 0,
             'created_by' => Auth::user()->id,
             'slug' => Str::slug($request['title']),
         ];
+        // dd($request->file('cover_img'));
+        if($request->file('cover_img')) {
+            $fields['cover_img'] = $request->file('cover_img')->store('post-image');
+        }
 
         if(!$request['is_archive']) {
             $fields['published_at'] = now();

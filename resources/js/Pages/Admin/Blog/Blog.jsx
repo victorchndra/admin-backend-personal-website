@@ -49,6 +49,14 @@ const Blog = ({ posts, navActive }) => {
         setDeleteModal(true)
     }
 
+    const truncateString = (str, num) => {
+        if (str.length > num) {
+            return str.slice(0, num) + "..."
+        } else {
+            return str
+        }
+    }
+
     return (
         <div className='flex flex-col py-12 px-10'>
             <div className='flex justify-between items-center'>
@@ -95,6 +103,7 @@ const Blog = ({ posts, navActive }) => {
                             <td>Title</td>
                             <td>Summary</td>
                             <td>Category</td>
+                            <td>Cover</td>
                             <td><ThumbsUp className='w-4 h-4'/></td>
                             <td>Archive Status</td>
                             <td>Last published</td>
@@ -106,7 +115,7 @@ const Blog = ({ posts, navActive }) => {
                             <tr key={post.id}>
                                 <td>{index+1}</td>
                                 <td>{post.title}</td>
-                                <td>{post.summary}</td>
+                                <td>{truncateString(post.summary, 50)}</td>
                                 <td>
                                     <div className='flex flex-col space-y-1'>
                                         {post.categories.length > 0
@@ -115,6 +124,7 @@ const Blog = ({ posts, navActive }) => {
                                             : (<span className='text-xs italic text-slate-400'>not defined</span>)}
                                     </div>
                                 </td>
+                                <td><img src={`/storage/${post.cover_img}`} className='size-20' alt='not found'/></td>
                                 <td>{post.upvote}</td>
                                 <td>
                                     {post.is_archive
