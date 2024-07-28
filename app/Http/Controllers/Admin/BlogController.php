@@ -17,10 +17,10 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         // $posts = Blog::with('categories')->get();
-        $posts = Blog::latest()->with('categories')->get();
+        $posts = Blog::latest()->with('categories')->with('category')->get();
 
         if($request->expectsJson()) {
-            $posts = Blog::latest()->with('categories')->paginate(10);
+            $posts = Blog::latest()->with('categories')->with('category')->paginate(10);
             return $posts;
         }
 

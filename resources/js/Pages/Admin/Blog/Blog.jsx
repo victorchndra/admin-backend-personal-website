@@ -103,6 +103,7 @@ const Blog = ({ posts, navActive }) => {
                             <td>Title</td>
                             <td>Summary</td>
                             <td>Category</td>
+                            <td>Tags</td>
                             <td>Cover</td>
                             <td><ThumbsUp className='w-4 h-4'/></td>
                             <td>Archive Status</td>
@@ -116,6 +117,13 @@ const Blog = ({ posts, navActive }) => {
                                 <td>{index+1}</td>
                                 <td>{post.title}</td>
                                 <td>{truncateString(post.summary, 50)}</td>
+                                <td>
+                                    <div className='flex flex-col'>
+                                        <span className='text-center text-xs bg-slate-700 text-white py-1 px-2 rounded-lg w-fit'>
+                                            {post.category.name}
+                                        </span>
+                                    </div>
+                                </td>
                                 <td>
                                     <div className='flex flex-col space-y-1'>
                                         {post.categories.length > 0
