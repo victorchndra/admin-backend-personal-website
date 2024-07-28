@@ -40,17 +40,17 @@ class DatabaseSeeder extends Seeder
             'name' => 'Technology'
         ]);
         Category::factory()->create([
-            'name' => 'Blockchain'
+            'name' => 'Investment'
         ]);
         Category::factory()->create([
-            'name' => 'Web3'
+            'name' => 'Insight'
         ]);
-        Category::factory()->create([
-            'name' => 'Artificial Intelligent'
-        ]);
-        Category::factory()->create([
-            'name' => 'Stack'
-        ]);
+        // Category::factory()->create([
+        //     'name' => 'Artificial Intelligent'
+        // ]);
+        // Category::factory()->create([
+        //     'name' => 'Stack'
+        // ]);
 
         DB::table('category_post')->insert([
             ['blog_id' => 1, 'category_id' => 1], // Data pertama
@@ -61,10 +61,10 @@ class DatabaseSeeder extends Seeder
             ['blog_id' => 4, 'category_id' => 1],
             ['blog_id' => 4, 'category_id' => 2],
             ['blog_id' => 4, 'category_id' => 3],
-            ['blog_id' => 5, 'category_id' => 5],
-            ['blog_id' => 5, 'category_id' => 4],
+            // ['blog_id' => 5, 'category_id' => 5],
+            // ['blog_id' => 5, 'category_id' => 4],
             ['blog_id' => 6, 'category_id' => 2],
-            ['blog_id' => 6, 'category_id' => 5],
+            // ['blog_id' => 6, 'category_id' => 5],
         ]);
     }
 }

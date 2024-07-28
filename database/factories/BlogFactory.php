@@ -25,7 +25,7 @@ class BlogFactory extends Factory
             'cover_img' => fake()->word(), //temporary instance
             'upvote' => fake()->randomNumber(2, false),
             'is_archive' => false,
-            'category_id' => fake()->numberBetween(1, 5),
+            'category_id' => fake()->numberBetween(1, 3),
             'created_by' => 1,
             'published_at' => fake()->dateTime()
         ];
