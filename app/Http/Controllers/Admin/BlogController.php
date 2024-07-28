@@ -55,6 +55,7 @@ class BlogController extends Controller
             'body' => 'required', //|min:50
             'cover_img' => 'nullable',
             'is_archive' => 'boolean',
+            // 'category_id' => 'required',
             'categories_id' => 'required',
         ]);
 
@@ -64,6 +65,7 @@ class BlogController extends Controller
             'body' => $request['body'],
             'is_archive' => $request['is_archive'],
             'upvote' => 0,
+            'category_id' => 1, //temporary, update it later
             'created_by' => Auth::user()->id,
             'slug' => Str::slug($request['title']),
         ];
