@@ -15,7 +15,7 @@ const BlogCardList = () => {
         <div className='flex space-x-6 mt-3 ml-1'>
             <div className='flex space-x-1'>
                 <ThumbsUp className='w-5 h-5'/>
-                <span>10</span>
+                <span>100</span>
             </div>
             <div className='flex space-x-1'>
                 <MessageSquare className='w-5 h-5' />
